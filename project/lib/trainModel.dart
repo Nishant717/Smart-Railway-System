@@ -1,5 +1,19 @@
 // ignore_for_file: camel_case_types, file_names, unnecessary_new, prefer_collection_literals, unnecessary_this
 
+class StationsBase {
+  final String name;
+  final String code;
+
+  StationsBase({required this.name, required this.code});
+
+  factory StationsBase.fromJson(Map<String, dynamic> json) {
+    return StationsBase(
+      name: json['name'],
+      code: json['code'],
+    );
+  }
+}
+
 class trainModel {
   bool? success;
   int? timeStamp;

@@ -3,6 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:project/screens/trainroute.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:project/trainModel.dart';
 
 class TrainPage extends StatefulWidget {
   const TrainPage({Key? key}) : super(key: key);
@@ -14,14 +20,37 @@ class TrainPage extends StatefulWidget {
 class _TrainPageState extends State<TrainPage> {
   var train;
   var traiNumber;
+  String startStationCode = '';
+  String destinationStationCode = '';
+
+  @override
+  void initState() {
+    super.initState();
+    print("Test");
+    loadJsonData();
+  }
+
+  List<StationsBase> items = [];
 
   TextEditingController _startStationController = TextEditingController();
   TextEditingController _destinationStationController = TextEditingController();
 
+  // void showToast() {
+  //   Fluttertoast.showToast(
+  //     msg: "This is a short toast",
+  //     toastLength: Toast.LENGTH_SHORT,
+  //     gravity: ToastGravity.BOTTOM,
+  //     timeInSecForIosWeb: 1,
+  //     backgroundColor: Colors.black,
+  //     textColor: Colors.white,
+  //   );
+  // }
+
   void getdata() async {
     try {
+      // showToast();
       var response = await Dio().get(
-          'https://indian-railway-api.cyclic.app/trains/betweenStations/?from=${_startStationController.text}&to=${_destinationStationController.text}');
+          'https://indian-railway-api.cyclic.app/trains/betweenStations/?from=${startStationCode}&to=${destinationStationCode}');
       if (response.statusCode == 200) {
         setState(() {
           train = response.data["data"];
@@ -34,6 +63,26 @@ class _TrainPageState extends State<TrainPage> {
     }
   }
 
+  Future<void> loadJsonData() async {
+    // Load JSON data from the asset file
+    String jsonData = await rootBundle.loadString('assets/data.json');
+    // print(jsonData);
+    // // Decode the JSON data
+    Map<String, dynamic> jsonMap = json.decode(jsonData);
+
+    List<dynamic> jsonList = jsonMap['data'];
+
+    // // Map the JSON data to a list of Person objects
+    List<StationsBase> loadStations =
+        jsonList.map((json) => StationsBase.fromJson(json)).toList();
+
+    // print(loadStations);
+    // // Update the state with the loaded data
+    setState(() {
+      items = loadStations;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,47 +92,92 @@ class _TrainPageState extends State<TrainPage> {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
-          TextField(
-            controller: _startStationController,
-            // onChanged: (text) {
-            //   _destinationStationController.value =
-            //       _destinationStationController.value.copyWith(
-            //     text: text.toUpperCase(),
-            //     selection: TextSelection.collapsed(offset: text.length),
-            //   );
-            // },
-            decoration: InputDecoration(
-              labelText: 'Starting Station',
-              labelStyle: TextStyle(
-                fontWeight: FontWeight.bold, // Font weight
-                fontSize: 16.0, // Font size
-              ),
-            ),
+          // TextField(
+          //   controller: _startStationController,
+          //   // onChanged: (text) {
+          //   //   _destinationStationController.value =
+          //   //       _destinationStationController.value.copyWith(
+          //   //     text: text.toUpperCase(),
+          //   //     selection: TextSelection.collapsed(offset: text.length),
+          //   //   );
+          //   // },
+          //   decoration: InputDecoration(
+          //     labelText: 'Starting Station',
+          //     labelStyle: TextStyle(
+          //       fontWeight: FontWeight.bold, // Font weight
+          //       fontSize: 16.0, // Font size
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 20),
+          // TextField(
+          //   controller: _destinationStationController,
+          //   // onChanged: (text) {
+          //   //   _destinationStationController.value =
+          //   //       _destinationStationController.value.copyWith(
+          //   //     text: text.toUpperCase(),
+          //   //     selection: TextSelection.collapsed(offset: text.length),
+          //   //   );
+          //   // },
+          //   decoration: InputDecoration(
+          //     labelText: 'Destination Station',
+          //     labelStyle: TextStyle(
+          //       fontWeight: FontWeight.bold, // Font weight
+          //       fontSize: 16.0, // Font size
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 20),
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+                decoration: InputDecoration(labelText: 'Select an item'),
+                controller: _startStationController),
+            suggestionsCallback: (pattern) {
+              return items.where((item) =>
+                  item.name.toLowerCase().contains(pattern.toLowerCase()) ||
+                  item.code.toLowerCase().contains(pattern.toLowerCase()));
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                  title: Text(suggestion.name),
+                  subtitle: Text(suggestion.code));
+            },
+            onSuggestionSelected: (suggestion) {
+              setState(() {
+                _startStationController.text = suggestion.name;
+                startStationCode = suggestion.code;
+              });
+            },
+          ),
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+                decoration: InputDecoration(labelText: 'Select an item'),
+                controller: _destinationStationController),
+            suggestionsCallback: (pattern) {
+              return items.where((item) =>
+                  item.name.toLowerCase().contains(pattern.toLowerCase()) ||
+                  item.code.toLowerCase().contains(pattern.toLowerCase()));
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                  title: Text(suggestion.name),
+                  subtitle: Text(suggestion.code));
+            },
+            onSuggestionSelected: (suggestion) {
+              setState(() {
+                _destinationStationController.text = suggestion.name;
+                destinationStationCode = suggestion.code;
+              });
+            },
           ),
           SizedBox(height: 20),
-          TextField(
-            controller: _destinationStationController,
-            // onChanged: (text) {
-            //   _destinationStationController.value =
-            //       _destinationStationController.value.copyWith(
-            //     text: text.toUpperCase(),
-            //     selection: TextSelection.collapsed(offset: text.length),
-            //   );
-            // },
-            decoration: InputDecoration(
-              labelText: 'Destination Station',
-              labelStyle: TextStyle(
-                fontWeight: FontWeight.bold, // Font weight
-                fontSize: 16.0, // Font size
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
+
           ElevatedButton(
             onPressed: getdata,
             child: Text('Search Train'),
           ),
           SizedBox(height: 20),
+
           if (train != null)
             ListView.builder(
               shrinkWrap: true,
