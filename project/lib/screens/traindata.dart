@@ -20,8 +20,8 @@ class TrainPage extends StatefulWidget {
 class _TrainPageState extends State<TrainPage> {
   var train;
   var traiNumber;
-  String startStationCode = '';
-  String destinationStationCode = '';
+  String startStationCode = 'ANND';
+  String destinationStationCode = 'ST';
   DateTime? selectedDate; // Variable to hold selected date
 
   @override
@@ -176,53 +176,97 @@ class _TrainPageState extends State<TrainPage> {
                   },
                   child: Card(
                     child: ListTile(
-                      title: Text(
-                        trainBase['train_name'],
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Train Number: ${trainBase['train_no']}',
+                            '‎ ‎${trainBase['train_no']}‎ ‎',
                             style: TextStyle(
+                              color: Colors.white,
+                              backgroundColor: Colors.orangeAccent,
+                              fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
+                            textAlign: TextAlign.justify,
+                          ),
+                          SizedBox(
+                            width: 13,
                           ),
                           Text(
-                            'Source Station: ${trainBase['source_stn_name']} (${trainBase['source_stn_code']})',
+                            trainBase['train_name'],
                             style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Destination Station: ${trainBase['dstn_stn_name']} (${trainBase['dstn_stn_code']})',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Departure Time: ${trainBase['from_time']}',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Arrival Time: ${trainBase['to_time']}',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Travel Time: ${trainBase['travel_time']}',
-                            style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${trainBase['from_stn_name']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(Icons.arrow_forward),
+                                  Text(
+                                    '${trainBase['to_stn_name']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${trainBase['from_stn_code']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  // Icon(Icons.arrow_forward),
+                                  Text(
+                                    '${trainBase['to_stn_code']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${trainBase['from_time']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '-${trainBase['travel_time']}-',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '${trainBase['to_time']}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                          ],
+                        ),
                       ),
                     ),
                   ),

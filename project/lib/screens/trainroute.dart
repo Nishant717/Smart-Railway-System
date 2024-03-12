@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_final_fields, avoid_print, prefer_const_constructors, sized_box_for_whitespace
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_final_fields, avoid_print, prefer_const_constructors, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -73,60 +73,45 @@ class _TrainRouteState extends State<TrainRoute> {
               height: 20,
             ),
             if (train != null)
-              Container(
-                height: 680, // Set a fixed height for the ListView
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    final station = train[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(
-                          station['source_stn_name'],
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text('Station Name')),
+                    DataColumn(label: Text('Arr-Dep')),
+                    DataColumn(label: Text('Dist.')),
+                    DataColumn(label: Text('Day')),
+                  ],
+                  columnSpacing: 10.0,
+                  rows: train.map<DataRow>((station) {
+                    return DataRow(cells: [
+                      DataCell(Text(
+                        station['source_stn_name'],
+                        style: TextStyle(fontSize: 15),
+                      )),
+                      DataCell(Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Arrive: ${station['arrive']}',
+                            style: TextStyle(fontSize: 13),
                           ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Arrive: ${station['arrive']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              'Depart: ${station['depart']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              'Distance: ${station['distance']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              'Day: ${station['day']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              'Zone: ${station['zone']}',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: train.length,
+                          Text(
+                            'Depart: ${station['depart']}',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      )),
+                      DataCell(Text(
+                        station['distance'],
+                        style: TextStyle(fontSize: 13),
+                      )),
+                      DataCell(Text(
+                        station['day'],
+                        style: TextStyle(fontSize: 13),
+                      )),
+                    ]);
+                  }).toList(),
                 ),
               ),
           ],
