@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project/screens/homepage.dart';
 import 'package:project/screens/traindata.dart';
 import 'package:project/screens/trainroute.dart';
+import 'screens/liveStation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         "/home": (context) => HomePage(),
         "/trains": (context) => const TrainPage(),
         "/routes": (context) => TrainRoute(trainNumber: ''),
+        "/station": (context) => LiveStation()
       },
     );
   }

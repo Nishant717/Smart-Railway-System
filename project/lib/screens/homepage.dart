@@ -15,43 +15,65 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Train App'),
+        title: Text('Train'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, "/trains");
-              },
-              splashColor: Color.fromARGB(0, 220, 210, 210),
-              child: _buildCard(
-                'assets/train.avif',
-                'Book Train Ticket',
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                // Added Expanded to ensure each InkWell takes equal space
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/trains");
+                  },
+                  splashColor: Color.fromARGB(0, 220, 210, 210),
+                  child: _buildCard(
+                    'assets/train.avif',
+                    'Book Train Ticket',
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, "/routes");
-              },
-              child: _buildCard(
-                'assets/route.avif',
-                'Check Train Route',
+              SizedBox(height: 10),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/routes");
+                  },
+                  child: _buildCard(
+                    'assets/route.avif',
+                    'Check Train Route',
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () {
-                // Handle check PNR status card tap
-              },
-              child: _buildCard(
-                'assets/tickets.avif',
-                'Check PNR Status',
+              SizedBox(height: 10),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    // Handle check PNR status card tap
+                  },
+                  child: _buildCard(
+                    'assets/tickets.avif',
+                    'Check PNR Status',
+                  ),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 10),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/station");
+                  },
+                  child: _buildCard(
+                    'assets/station.avif',
+                    'Live Station',
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

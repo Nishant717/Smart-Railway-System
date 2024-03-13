@@ -19,7 +19,7 @@ class TrainPage extends StatefulWidget {
 
 class _TrainPageState extends State<TrainPage> {
   var train;
-  var traiNumber;
+  // var traiNumber;
   String startStationCode = 'ANND';
   String destinationStationCode = 'ST';
   DateTime? selectedDate; // Variable to hold selected date

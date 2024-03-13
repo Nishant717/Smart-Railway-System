@@ -73,90 +73,87 @@ class _TrainRouteState extends State<TrainRoute> {
               height: 20,
             ),
             if (train != null)
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DataTable(
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'Sr',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DataTable(
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        'Sr',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      DataColumn(
-                          label: Text(
-                        'Station Name',
+                    ),
+                    DataColumn(
+                        label: Text(
+                      'Station Name',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Arr-Dep',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Dist.',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Day',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    )),
+                  ],
+                  columnSpacing: 10.0,
+                  rows: train.map<DataRow>((station) {
+                    int index = train.indexOf(station) + 1;
+                    return DataRow(cells: [
+                      DataCell(Text(
+                        '$index',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                      DataCell(Text(
+                        station['source_stn_name'],
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       )),
-                      DataColumn(
-                          label: Text(
-                        'Arr-Dep',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )),
-                      DataColumn(
-                          label: Text(
-                        'Dist.',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )),
-                      DataColumn(
-                          label: Text(
-                        'Day',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )),
-                    ],
-                    columnSpacing: 10.0,
-                    rows: train.map<DataRow>((station) {
-                      int index = train.indexOf(station) + 1;
-                      return DataRow(cells: [
-                        DataCell(Text(
-                          '$index',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                      DataCell(Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${station['arrive']}',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
                           ),
-                        )),
-                        DataCell(Text(
-                          station['source_stn_name'],
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        )),
-                        DataCell(Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${station['arrive']}',
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              ' ${station['depart']}',
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        )),
-                        DataCell(Text(
-                          station['distance'],
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        )),
-                        DataCell(Text(
-                          station['day'],
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        )),
-                      ]);
-                    }).toList(),
-                  ),
+                          Text(
+                            ' ${station['depart']}',
+                            style: TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                      DataCell(Text(
+                        station['distance'],
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      )),
+                      DataCell(Text(
+                        station['day'],
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      )),
+                    ]);
+                  }).toList(),
                 ),
               ),
           ],
