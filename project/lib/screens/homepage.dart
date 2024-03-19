@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    // Handle check PNR status card tap
+                    Navigator.pushNamed(context, "/pnr");
                   },
                   child: _buildCard(
                     'assets/tickets.avif',
