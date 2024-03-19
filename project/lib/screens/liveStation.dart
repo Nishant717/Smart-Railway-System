@@ -20,8 +20,6 @@ class _LiveStationState extends State<LiveStation> {
   var train;
   // var traiNumber;
   String startStationCode = '';
-  // String destinationStationCode = 'ST';
-  DateTime? selectedDate; // Variable to hold selected date
 
   @override
   void initState() {
