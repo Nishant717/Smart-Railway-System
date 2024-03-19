@@ -46,6 +46,7 @@ class _PnrStatusState extends State<PnrStatus> {
                 labelText: 'Enter PNR number',
               ),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: getdata,
               child: Text('Get Status'),
@@ -73,12 +74,7 @@ class _PnrStatusState extends State<PnrStatus> {
                             _buildDataRow('Reserved Upto',
                                 '${_trainData!['ReservationUpto']}'),
                             _buildDataRow('Class', '${_trainData!['Class']}'),
-                            _buildDataRow('Passenger Count',
-                                '${_trainData!['PassengerCount']}'),
-                            _buildDataRow('Booking Status',
-                                '${_trainData!['PassengerStatus'][0]['BookingStatus']}'),
-                            _buildDataRow('Current Status',
-                                '${_trainData!['PassengerStatus'][0]['CurrentStatus']}'),
+                            _buildPassengerDetails(),
                             _buildDataRow(
                                 'Total Fare', '${_trainData!['TicketFare']}'),
                           ],
@@ -97,6 +93,7 @@ class _PnrStatusState extends State<PnrStatus> {
 
   Widget _buildDataRow(String label, String value) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -118,6 +115,51 @@ class _PnrStatusState extends State<PnrStatus> {
         ),
         Divider(color: Colors.grey),
       ],
+    );
+  }
+
+  Widget _buildPassengerDetails() {
+    List<Widget> passengerRows = [];
+    if (_trainData!['PassengerStatus'] != null) {
+      for (var passenger in _trainData!['PassengerStatus']) {
+        passengerRows.add(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      'Passenger ${passenger['Number']}:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Booking Status: ${passenger['BookingStatus']}'),
+                        Text('Current Status: ${passenger['CurrentStatus']}'),
+                        Text(
+                            'Seat: ${passenger['Coach']} ${passenger['Berth']}'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Divider(color: Colors.grey),
+            ],
+          ),
+        );
+      }
+    } else {
+      passengerRows.add(Text('No passenger data available'));
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: passengerRows,
     );
   }
 }
