@@ -20,6 +20,7 @@ class TrainPage extends StatefulWidget {
 class _TrainPageState extends State<TrainPage> {
   var train;
   // var traiNumber;
+  bool isTrainAvailable = true;
   String startStationCode = '';
   String destinationStationCode = '';
   DateTime? selectedDate; // Variable to hold selected date
@@ -163,7 +164,7 @@ class _TrainPageState extends State<TrainPage> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                if (train != null && train!.isNotEmpty) {
+                if (train != null && train is List && train!.isNotEmpty) {
                   final trainBase = train![index]['train_base'];
                   return InkWell(
                     onTap: () {
@@ -273,15 +274,30 @@ class _TrainPageState extends State<TrainPage> {
                     ),
                   );
                 } else {
-                  return Center(
-                    child: Text(
-                      'No train data available.',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  );
+                  // Set isTrainAvailable to false to indicate no train data available
+                  isTrainAvailable = false;
+                  return SizedBox(); // Return an empty SizedBox
                 }
               },
-              itemCount: train?.length ?? 0, // Ensure train is not null
+              itemCount: train?.length ?? 0,
+            ),
+          // Display "No train data available" message if isTrainAvailable is false
+          if (!isTrainAvailable)
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                          'assets/trainerror.webp')), // Your image asset
+                  SizedBox(height: 16),
+                  Text(
+                    'No train available between the stations.',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
         ],
       ),

@@ -72,7 +72,7 @@ class _TrainRouteState extends State<TrainRoute> {
             SizedBox(
               height: 20,
             ),
-            if (train != null)
+            if (train != null && train is List && train.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DataTable(
@@ -154,6 +154,25 @@ class _TrainRouteState extends State<TrainRoute> {
                       )),
                     ]);
                   }).toList(),
+                ),
+              )
+            else // Display message when no train data is available
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                            'assets/trainerror.webp')), // Your image asset
+                    SizedBox(height: 16),
+                    Text(
+                      'No train route found for the provided train number.',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
           ],
